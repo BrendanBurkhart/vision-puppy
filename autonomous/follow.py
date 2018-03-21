@@ -20,7 +20,10 @@ class FollowAutonomous(AutonomousStateMachine):
             self.next_state('follow')
             return
 
-        self.drivetrain.turn(0.15)
+        if self.last_direction == "left":
+            self.drivetrain.turn(0.15)
+        else:
+            self.drivetrain.turn(-0.15)
 
     @state
     def follow(self):
@@ -31,7 +34,6 @@ class FollowAutonomous(AutonomousStateMachine):
             return
 
         offset, self.last_direction = vision_data
-        print(offset)
 
         self.drivetrain.curve(offset / 320)
         self.drivetrain.forward_at(0.2)
